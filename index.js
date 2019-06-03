@@ -14,17 +14,9 @@ const authors = [
   { id: 3, firstName: 'Chimamanda', lastName: 'Adichie' },
 ];
 
-const users = [
-  { id: 1, firstName: 'Wole', lastName: 'Soyinka' }
-];
-
-const comments = [
-  { id: 1, description: 'Wole', userId: 1 }
-];
-
 const links = [
-  { id: 1, title: 'Apple Sign In', points: 8, userId: 1, website: 'techcrunch.com', created: Date },
-  { id: 2, title: '	WWDC 2019 Keynote Livestream ', points: 25, userId: 1, website: 'foundationinc.co', created: Date },
+  { id: 1, title: 'Apple Sign In', points: 8, website: 'techcrunch.com', created: Date },
+  { id: 2, title: '	WWDC 2019 Keynote Livestream ', points: 25, website: 'foundationinc.co', created: Date },
 ];
 
 const typeDefs = gql`
@@ -40,11 +32,19 @@ const typeDefs = gql`
     rating: Int!
     author: Author!
   }
+  type Link {
+    id: Int!
+    title: String!
+    points: Int!
+    website: String! 
+    created: Date!
+  }
   # the schema allows the following query
   type Query {
     books: [Book!]!
     book(id: Int!): Book!
     author(id: Int!): Author!
+    link(id: Int!): Link!
   }
   # this schema allows the following mutation
   type Mutation {
@@ -59,8 +59,8 @@ const resolvers = {
     books: () => books,
     links: () => links,
     book: (_, { id }) => books.find(book => book.id === id),
-    link: (_, { id }) => links.find(link => link.id === id),
     author: (_, { id }) => authors.find(author => author.id === id),
+    link: (_, { id }) => links.find(link => link.id === id),
   },
   Mutation: {
     addBook: (_, { title, rating, authorId }) => {
@@ -83,7 +83,6 @@ const resolvers = {
         id: linkId,
         title, 
         points, 
-        userId, 
         website, 
         created
       };
