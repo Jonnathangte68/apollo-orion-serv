@@ -59,6 +59,7 @@ const resolvers = {
     books: () => books,
     links: () => links,
     book: (_, { id }) => books.find(book => book.id === id),
+    link: (_, { id }) => links.find(link => link.id === id),
     author: (_, { id }) => authors.find(author => author.id === id),
   },
   Mutation: {
